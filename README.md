@@ -1,2 +1,3 @@
 # AgentsPlots.jl
-Plotting functionality for Agent-Based-Modelling in Julia
+
+Plotting functionality for [`Agents.jl`](https://github.com/JuliaDynamics/Agents.jl) agent-based modeling in Julia.
