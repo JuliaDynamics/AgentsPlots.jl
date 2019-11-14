@@ -1,11 +1,9 @@
 module AgentsPlots
 
 using Agents
-using GraphPlot
+using Plots
 using ColorTypes
-using Compose
-using Cairo
-using Fontconfig
+
 
 include("gridplots.jl")
 
