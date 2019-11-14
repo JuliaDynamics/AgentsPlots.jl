@@ -1,5 +1,6 @@
 export visualize_2D_agent_distribution, visualize_1DCA, visualize_2DCA
 
+nv = Agents.nv
 
 """
 plot_locs(g, dims::Tuple{Integer,Integer,Integer})
@@ -25,6 +26,16 @@ Return arrays for x, y coordinates of each node
 function node_locs(g, dims::Tuple{Integer,Integer})
   coords = []
   for nn in 1:nv(g)
+    push!(coords, vertex2coord(nn, dims))
+  end
+  locs_x = [Float64(i[1]) for i in coords]
+  locs_y = [Float64(i[2]) for i in coords]
+  return locs_x, locs_y
+end
+
+function node_locs(nnodes::Integer, dims::Tuple{Integer,Integer})
+  coords = []
+  for nn in 1:nnodes
     push!(coords, vertex2coord(nn, dims))
   end
   locs_x = [Float64(i[1]) for i in coords]
@@ -146,31 +157,38 @@ Visualizes data of a 1D cellular automaton and saves it in a PDF file under the 
 * `status_column` is the field of the agents that holds their status.
 * `nrows` is the number of times the model was run.
 """
-
-function visualize_1DCA(data, model::ABM, position_column::Symbol, status_column::Symbol, nrows::Integer; savename::AbstractString="CA_1D", saveloc::AbstractString="./")
+function visualize_1DCA(data, model::ABM, position_column::Symbol, status_column::Symbol, nrows::Integer; savename::AbstractString="CA_1D", saveloc::AbstractString="./", saveformat::String="pdf")
   dims = (nrows, model.space.dimensions[1])
-  g = Space((dims[1], dims[2])).graph
-  locs_x, locs_y = node_locs(g, dims)
   nnodes = dims[1]*dims[2]
 
   # base node color is light grey
-  nodefillc = ["black" for i in 1:nnodes]
-  nodealphas = zeros(nnodes)
+  nodefillc = ["black" for i in 1:nnodes];
+  nodealphas = zeros(nnodes);
   
+  colnames = Symbol[]
   for row in 1:nrows
-    pos = Symbol(string(position_column)*"_$row")
-    status = Symbol(string(status_column)*"_$row")
-    newalphas = [0.01 for i in 1:dims[2]]
-    for ll in 1:dims[2]
-      if data[!, status][ll] == "1"
-        newalphas[ll] = 1.0
-      end
-    end
-    nodealphas[(dims[2]*row)-(dims[2]-1):dims[2]*row] .= newalphas
+    cn = Symbol(string(status_column)*"_$row")
+    push!(colnames, cn)
   end
   
+  pos1 = Symbol(string(position_column)*"_1")
+  correct_order = sortperm(data[!, pos1])
+
+  mm = Matrix(data[!, colnames]);
+  mm = mm[correct_order, :];
+  mm = transpose(parse.(Int, mm));
+
+  ons = findall(x->x==1, mm);
+  ons = getproperty.(ons, :I)
+  on_inds = [coord2vertex(i, dims) for i in ons]
+  nodealphas[on_inds] .= 1.0
+  
+  locs_x, locs_y = node_locs(nnodes, dims)
+  locs_x = maximum(locs_x) .- locs_x
+
   NODESIZE = 0.17*sqrt(gridsize(model))
-  scatter(locs_x, locs_y, legend=false, grid=false, showaxis=false, markersize=NODESIZE, markerstrokestyle = :square, markercolor=nodefillc, markeralpha=nodealphas)
+
+  scatter(locs_y, locs_x, legend=false, grid=false, showaxis=false, markersize=NODESIZE, markerstrokestyle = :square, markercolor=nodefillc, markeralpha=nodealphas)
   savefig(joinpath(saveloc, "$savename.$saveformat"))  
 end
 
@@ -186,16 +204,21 @@ function visualize_2DCA(data, model::ABM, position_column::Symbol, status_column
   g = model.space.graph
   locs_x, locs_y = node_locs(g, dims)
   NODESIZE = 0.02*sqrt(gridsize(model))
-  
-  nodefillc = ["black" for i in 1:gridsize(model)]
+
+  pos1 = Symbol(string(position_column)*"_1")
+
+  nodefillc = ["black" for i in 1:gridsize(model)];
   for r in 1:runs
-    nodealphas = [0.01 for i in 1:gridsize(model)]
+    nodealphas = [0.01 for i in 1:gridsize(model)];
     stat = Symbol(string(status_column)*"_$r")
     nonzeros = findall(a-> a =="1", data[!, stat])
     
-    nodealphas[nonzeros] .= 1.0
+    correct_order = sortperm(data[!, pos1])
     
-    scatter(locs_x, locs_y, legend=false, grid=false, showaxis=false, markersize=NODESIZE, markerstrokestyle = :square, markercolor=nodefillc, markeralpha=nodealphas)
-    savefig(joinpath(saveloc, "$(savename)_$r.png"))  
+    nodealphas[nonzeros] .= 1.0
+    nodealphas = nodealphas[correct_order]
+    
+    scatter(locs_x, locs_y, legend=false, grid=false, showaxis=false, markersize=NODESIZE, markerstrokestyle = :square, markercolor=nodefillc, markeralpha=nodealphas);
+    savefig(joinpath(saveloc, "$(savename)_$r.png"))
   end
 end
