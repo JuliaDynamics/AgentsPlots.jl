@@ -1,3 +1,5 @@
+export visualize_2D_agent_distribution, visualize_1DCA, visualize_2DCA
+
 
 """
 plot_locs(g, dims::Tuple{Integer,Integer,Integer})
@@ -29,7 +31,6 @@ function node_locs(g, dims::Tuple{Integer,Integer})
   locs_y = [Float64(i[2]) for i in coords]
   return locs_x, locs_y
 end
-
 
 """
 colorrgb(color_names::Array)
@@ -76,10 +77,7 @@ function colorrgb(n::Integer)
   return rgb_dict
 end
 
-
 """
-visualize_2D_agent_distribution(data::DataFrame, model::AbstractModel, position_column::Symbol; types::Symbol=:id, savename::AbstractString="2D_agent_distribution", saveloc::AbstractString="./", cc::Dict=Dict(), saveformat::String="pdf")
-
 Plots the distribution of agents on a 2D grid.
 
 Plots are saved as PDF files under the name given by the `savename` argument. Optionally, choose a path to save the plots using the `saveloc` argument. The default behavior is to save in the current directory, where the code is run.
@@ -137,7 +135,6 @@ function visualize_2D_agent_distribution(data, model::ABM, position_column::Symb
   savefig(joinpath(saveloc, "$savename.$saveformat"))
 end
 
-
 """
 visualize_1DCA(data::DataFrame, model::AbstractModel, position_column::Symbol, status_column::Symbol, nrows::Integer; savename::AbstractString="CA_1D", saveloc::AbstractString="./")
 
@@ -149,6 +146,7 @@ Visualizes data of a 1D cellular automaton and saves it in a PDF file under the 
 * `status_column` is the field of the agents that holds their status.
 * `nrows` is the number of times the model was run.
 """
+
 function visualize_1DCA(data, model::ABM, position_column::Symbol, status_column::Symbol, nrows::Integer; savename::AbstractString="CA_1D", saveloc::AbstractString="./")
   dims = (nrows, model.space.dimensions[1])
   g = Space((dims[1], dims[2])).graph
@@ -175,8 +173,6 @@ function visualize_1DCA(data, model::ABM, position_column::Symbol, status_column
   scatter(locs_x, locs_y, legend=false, grid=false, showaxis=false, markersize=NODESIZE, markerstrokestyle = :square, markercolor=nodefillc, markeralpha=nodealphas)
   savefig(joinpath(saveloc, "$savename.$saveformat"))  
 end
-
-
 
 """
 visualize_2DCA(data::DataFrame, model::AbstractModel, position_column::Symbol, status_column::Symbol, runs::Integer; savename::AbstractString="CA_2D")
