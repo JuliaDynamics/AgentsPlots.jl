@@ -56,7 +56,7 @@ function visualize_2D_agent_distribution(data::DataFrame, model::AbstractModel, 
     maxval = maximum(d[!, :N])
     nodefillc[d[pos]] .= [RGBA(0.1, 0.1, 0.1, i) for i in  (d[!, :N] ./ maxval) .- 0.001]
   else  # there are different types of agents based on the values of the "types" column
-    dd = dropmissing(data[:, [position_column, types]])
+    dd = Agents.dropmissing(data[:, [position_column, types]])
     unique_types = sort(unique(dd[!, types]))
     pos = position_column
     if length(cc) == 0
@@ -76,7 +76,7 @@ function visualize_2D_agent_distribution(data::DataFrame, model::AbstractModel, 
     colorrev = Dict(v=>k for (k,v) in colors)
     for index in 1:length(unique_types)
       tt = unique_types[index]
-      d = by(dd[dd[!, types] .== tt, :], pos, N = pos => length)
+      d = Agents.by(dd[dd[!, types] .== tt, :], pos, N = pos => length)
       maxval = maximum(d[!, :N])
       nodefillc[d[!, pos]] .= [RGBA(colordict[tt][1], colordict[tt][2], colordict[tt][3], i) for i in  (d[!, :N] ./ maxval) .- 0.001]
       println("$tt: $(colorrev[colordict[tt]])")
