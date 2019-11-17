@@ -1,0 +1,18 @@
+language: julia
+os:
+  - linux
+  - windows
+
+julia:
+  - 1.0
+  - 1.2
+notifications:
+  email: false
+git:
+  depth: 99999999
+matrix:
+  allow_failures:
+  - julia: nightly
+
+script:
+- julia --color=yes -e 'using Pkg; Pkg.build(); Pkg.test()'
