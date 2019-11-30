@@ -152,7 +152,7 @@ end
 Visualizes data of a 1D cellular automaton and saves it in a PDF file under the name given by the `savename` argument. Optionally provide a location for the plots to be saved using the `saveloc` argument. The default behavior is to save them in the currently active directory.
 
 * `data` are the result of multiple runs of the simulation.
-* `run` is the number of times the model was run.
+* `runs` is the number of times the model was run.
 
 # Keywords
 
@@ -196,30 +196,36 @@ function visualize_1DCA(data, model::ABM, runs::Integer;
 end
 
 """
-visualize_2DCA(data::DataFrame, model::AbstractModel, position_column::Symbol, status_column::Symbol, runs::Integer; savename::AbstractString="CA_2D")
+    visualize_2DCA(data, model::ABM, runs::Integer; kwargs...)
 
 Visualizes data of a 2D cellular automaton and saves it in PNG format under the name given by the `savename` argument. Optionally provide a location for the plots to be saved using the `saveloc` argument. The default behavior is to save them in the currently active directory.
 
-`data` are the result of multiple runs of the simulation. `position_column` is the field of the agent that holds their position. `status_column` is the field of the agents that holds their status. `runs` is the number of times the simulation was run.
+* `data` are the result of multiple runs of the simulation.
+* `runs` is the number of times the model was run.
+
+# Keywords
+
+* position_column::Symbol = :pos : the field of the agent that holds their position.
+* status_column::Symbol = :status : the field of the agents that holds their status.
+* savename::AbstractString = "CA_1D"
+* saveloc::AbstractString = "./"
+
 """
-function visualize_2DCA(data, model::ABM, position_column::Symbol, status_column::Symbol, runs::Integer; savename::AbstractString="CA_2D", saveloc::AbstractString="./")
+function visualize_2DCA(data, model::ABM, runs::Integer; position_column::Symbol = :pos, status_column::Symbol = :status, savename::AbstractString="CA_2D", saveloc::AbstractString="./")
   dims = model.space.dimensions
   g = model.space.graph
   locs_x, locs_y = node_locs(g, dims)
-  NODESIZE = 0.02*sqrt(gridsize(model))
+  NODESIZE = 0.02*sqrt(nv(model))
 
-  pos1 = Symbol(string(position_column)*"_1")
+  nodefillc = ["black" for i in 1:nv(model)];
+  for r in 0:runs
+    nodealphas = [0.01 for i in 1:nv(model)];
 
-  nodefillc = ["black" for i in 1:gridsize(model)];
-  for r in 1:runs
-    nodealphas = [0.01 for i in 1:gridsize(model)];
-    stat = Symbol(string(status_column)*"_$r")
-    nonzeros = findall(a-> a =="1", data[!, stat])
-    
-    correct_order = sortperm(data[!, pos1])
+    d = parse.(Int, sort(data[data[!, :step] .== r, [position_column, status_column]], position_column)[!, status_column])
+
+    nonzeros = findall(a-> a ==1, d)
     
     nodealphas[nonzeros] .= 1.0
-    nodealphas = nodealphas[correct_order]
     
     scatter(locs_x, locs_y, legend=false, grid=false, showaxis=false, markersize=NODESIZE, markerstrokestyle = :square, markercolor=nodefillc, markeralpha=nodealphas);
     savefig(joinpath(saveloc, "$(savename)_$r.png"))
