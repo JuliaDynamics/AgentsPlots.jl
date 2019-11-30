@@ -18,5 +18,5 @@
   data = CA2D.ca_run(model, runs);
 
   # 3. Visualize the data
-  @test visualize_2DCA(data, model, runs, savename="gameOfLife") != false
+  @test plot_CA2D(data, savename="gameOfLife", nodesize=2) != false
 end
