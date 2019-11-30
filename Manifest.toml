@@ -20,9 +20,9 @@ version = "0.3.1"
 
 [[ArrayLayouts]]
 deps = ["FillArrays", "LinearAlgebra"]
-git-tree-sha1 = "1ddfbcefdcb1d5417cf10a29e4ce3284a7ebb379"
+git-tree-sha1 = "5b5ec5292c64adfd6a46393c100ab11cdcab353b"
 uuid = "4c555306-a7a7-4459-81d9-ec55ddd5c99a"
-version = "0.1.1"
+version = "0.1.2"
 
 [[Base64]]
 uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
@@ -216,9 +216,9 @@ version = "0.4.0"
 
 [[HTTP]]
 deps = ["Base64", "Dates", "IniFile", "MbedTLS", "Sockets"]
-git-tree-sha1 = "806f2a5d66d1b78e5349fd463a41f0c10ca5fff3"
+git-tree-sha1 = "5c49dab19938b119fe204fd7d7e8e174f4e9c68b"
 uuid = "cd3eb016-35fb-5094-929b-558a96fad6f3"
-version = "0.8.7"
+version = "0.8.8"
 
 [[Inflate]]
 deps = ["Pkg", "Printf", "Random", "Test"]
