@@ -15,5 +15,5 @@
   data = CA1D.ca_run(model, runs);
 
   # 3. Visualize the data
-  @test visualize_1DCA(data, model, :pos, :status, runs, savename="rule30") != false
+  @test visualize_1DCA(data, model, runs, savename="rule30") != false
 end
