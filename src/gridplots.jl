@@ -137,6 +137,6 @@ function plot_CA2D(data;
       end
     end
 
-    plot2D(dd[!, :pos], nodecolors, savename=savename*"_$ss", saveloc=saveloc, saveformat=saveformat, nodesize=nodesize, markeralpha=markeralpha)
+    plot2D(dd[!, :pos], nodecolors, savename=savename*"_$(lpad(string(ss), 3, '0'))", saveloc=saveloc, saveformat=saveformat, nodesize=nodesize, markeralpha=markeralpha)
   end
 end
