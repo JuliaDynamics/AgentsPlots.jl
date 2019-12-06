@@ -15,5 +15,5 @@
   data = CA1D.ca_run(model, runs);
 
   # 3. Visualize the data
-  @test plot_CA1D(data, savename="rule30", nodesize=2) != false
+  @test typeof(plot_CA1D(data, nodesize=2)) <: AgentsPlots.AbstractPlot
 end
