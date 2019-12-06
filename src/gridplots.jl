@@ -1,25 +1,24 @@
-export plot2D, plot_CA1D, plot_CA2D
+export plot2D, plot_CA1D, plot_CA2D, plot_CA2Dgif
 
-const colornames = ["blue", "orange", "green", "red", "purple", "brown", "pink", "gray", "olive", "cyan", "gold", "lime", "teal", "violet", "darkviolet", "lawngreen", "lightgreen", "navy"]
+const colornames = ["blue", "orange", "green", "red", "purple", "brown", "pink",
+"gray", "olive", "cyan", "gold", "lime", "teal", "violet", "darkviolet",
+"lawngreen", "lightgreen", "navy"]
 
 """
     plot2D(node_coords::AbstractArray, colors::AbstractArray; kwargs...)
 
-saves a scatter plot for nodes and their colors
+Creates a scatter plot for nodes and their colors
 
 * node_coords: node positions as coordinates
 * colors: color of each node
 
 # Keywords
 
-* savename::String
-* saveformat::String="png"
-* saveloc::String="./"
 * nodesize=1.0
 * markeralpha = nothing
 """
 function plot2D(node_coords::AbstractArray, colors::AbstractArray;
-  savename::String, saveformat::String="png", saveloc::String="./", nodesize=1.0, markeralpha=nothing)
+                nodesize=1.0, markeralpha=nothing)
   xs = [i[1] for i in node_coords]
   ys = [i[2] for i in node_coords]
 
@@ -29,7 +28,6 @@ function plot2D(node_coords::AbstractArray, colors::AbstractArray;
 
   scatter(xs, ys, legend=false, grid=false, showaxis=false, markersize=nodesize,
     markercolor=colors, markeralpha=markeralpha)
-  savefig(joinpath(saveloc, "$savename.$saveformat")) 
 end
 
 """
@@ -41,52 +39,41 @@ as tuples.
 * data: A dataframe output of your simulation.
 * status_column: the name of a column that determines category of each agent, so that it is colored differently.
 
-Plots are by default saved in the directory that the code is run. See Keywords for changing that.
-
 # Keywords
 
 * cc::Dict=Dict() Optionally provide a color name for each unique value in the `status_column`
-* savename::AbstractString = "2D_agent_distribution"
-* saveloc::AbstractString = "./",
-* saveformat::String = "png"
 * nodesize=1.0 size of each node
-* s=0 the step of the simulation to plot.
+* t=0 the time step of the simulation to plot.
 """
 function plot2D(data, status_column::Symbol; 
-  cc::Dict=Dict(), savename::AbstractString = "2D_agent_distribution",
-  saveloc::AbstractString = "./", saveformat::String = "png", nodesize=1.0, s::Int=0)
+                cc::Dict=Dict(), nodesize=1.0, t::Int=0)
 
-  dd = data[data[!, :step] .== s, :]
+  dd = data[data[!, :step] .== t, :]
   unique_types = unique(dd[!, status_column])
 
   if length(cc) == 0
-    for (ind, t) in enumerate(unique_types)
-      cc[t] = colornames[ind]
+    for (ind, s) in enumerate(unique_types)
+      cc[s] = colornames[ind]
     end
   end
 
   nodecolors = [cc[i] for i in dd[!, status_column]]
 
-  plot2D(dd[!, :pos], nodecolors, savename=savename, saveloc=saveloc, saveformat=saveformat, nodesize=nodesize)
+  plot2D(dd[!, :pos], nodecolors, nodesize=nodesize)
 end
 
 """
     plot_CA1D(data; Keywords)
 
-Visualizes data of a 1D cellular automaton and saves it to file. Optionally provide a location for the plots to be saved using the `saveloc` argument. The default behavior is to save them in the currently active directory.
+Visualizes data of a 1D cellular automaton.
 
-* `data` output of `CA1D.ca_run`.
+* `data`: output of `CA1D.ca_run`.
 
 # Keywords
 
-* savename::AbstractString = "CA_1D" Plot name
-* saveloc::AbstractString = "./" Optionally provide a location for the plots to be saved
-* saveformat::String="png"
-* nodesize=2.0
+* nodesize=2.0: Size of each cell.
 """
-function plot_CA1D(data;
-  savename::AbstractString = "CA_1D",
-  saveloc::AbstractString = "./", saveformat::String = "png", nodesize=2.0)
+function plot_CA1D(data; nodesize=2.0)
 
   nrows = size(data, 1)
   nsteps = length(unique(data[!, :step]))
@@ -103,40 +90,56 @@ function plot_CA1D(data;
     end
   end
 
-  plot2D(node_coords, nodecolors, savename=savename, saveloc=saveloc, saveformat=saveformat, nodesize=nodesize, markeralpha=markeralpha)
+  plot2D(node_coords, nodecolors, markeralpha=markeralpha)
 end
 
 """
     plot_CA2D(data; kwargs...)
 
-Visualizes data of a 2D cellular automaton and saves them to files. Optionally provide a location for the plots to be saved using the `saveloc` argument. The default behavior is to save them in the currently active directory.
+Visualizes data of a 2D cellular automaton.
 
-* `data` output of `CA2D.ca_run`.
+* `data`: output of `CA2D.ca_run`.
 
 # Keywords
 
-* savename::AbstractString = "CA_2D" Plot name
-* saveloc::AbstractString = "./" Optionally provide a location for the plots to be saved
-* saveformat::String="png"
+* t::Int=-1 : The time step to be plotted. If -1, all the rows in `data` are used.
 * nodesize=2.0
 """
-function plot_CA2D(data;
-  savename::AbstractString = "CA_1D",
-  saveloc::AbstractString = "./", saveformat::String = "png", nodesize=2.0)
+function plot_CA2D(data; t::Int=-1, nodesize=2.0)
 
-  steps = unique(data[!, :step])
-  for ss in steps
-    dd = data[data[!, :step] .== ss, :]
-
-    nrows = size(dd, 1)
-    nodecolors = ["black" for i in 1:nrows]
-    markeralpha = [0.01 for i in 1:nrows]
-    for row in 1:nrows
-      if dd[row, :status] == "1"
-        markeralpha[row] = 1.0
-      end
-    end
-
-    plot2D(dd[!, :pos], nodecolors, savename=savename*"_$(lpad(string(ss), 4, '0'))", saveloc=saveloc, saveformat=saveformat, nodesize=nodesize, markeralpha=markeralpha)
+  if t > -1
+    dd = data[data[!, :step] .== t, :]
+  else
+    dd = data
   end
+
+  nrows = size(dd, 1)
+  nodecolors = ["black" for i in 1:nrows]
+  markeralpha = [0.01 for i in 1:nrows]
+  for row in 1:nrows
+    if dd[row, :status] == "1"
+      markeralpha[row] = 1.0
+    end
+  end
+
+  plot2D(dd[!, :pos], nodecolors, nodesize=nodesize, markeralpha=markeralpha)
+end
+
+
+"""
+    plot_CA2Dgif(data; kwargs...)
+
+Create a 2D scatter plot from all `data` and adds a frame to the `anim` animation object. If `anim` is not provided, it creates a new one. Returns an animation object. It can be saved as an animated gif using `AgentsPlots.gif(anim, "filename.gif")`.
+
+* `data`: output of of time-step of `CA2D.ca_run`.
+
+# Keywords
+
+* anim::Animation=Animation() : animation object. If provided, a new frame is added to it.
+* nodesize=2.0
+"""
+function plot_CA2Dgif(data; nodesize=2.0, anim::Animation=Animation())
+  p = plot_CA2D(data; nodesize=nodesize)
+  frame(anim, p)
+  return anim  
 end
