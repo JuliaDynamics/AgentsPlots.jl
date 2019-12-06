@@ -108,7 +108,7 @@ Visualizes data of a 2D cellular automaton.
 """
 function plot_CA2D(data; t=nothing, nodesize=2.0)
 
-  if t == nothing
+  if t != nothing
     dd = data[data[!, :step] .== t, :]
   else
     dd = data

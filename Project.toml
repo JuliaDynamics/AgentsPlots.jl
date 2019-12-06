@@ -1,7 +1,7 @@
 name = "AgentsPlots"
 uuid = "7820620d-95fb-4739-93b3-b0a14dd83f9a"
 authors = ["Ali R. Vahdati", "George Datseris"]
-version = "0.1.1"
+version = "0.1.2"
 
 [deps]
 Agents = "46ada45e-f475-11e8-01d0-f70cc89e6671"
