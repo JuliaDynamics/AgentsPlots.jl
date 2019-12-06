@@ -37,7 +37,8 @@ Plots the distribution of agents on a 2D grid. Agent positions should be saved
 as tuples.
 
 * data: A dataframe output of your simulation.
-* status_column: the name of a column that determines category of each agent, so that it is colored differently.
+* status_column: the name of a column that determines category of each agent, 
+  so that it is colored differently.
 
 # Keywords
 
@@ -102,12 +103,12 @@ Visualizes data of a 2D cellular automaton.
 
 # Keywords
 
-* t::Int=-1 : The time step to be plotted. If -1, all the rows in `data` are used.
+* t=nothing : The time step to be plotted. If nothing, all the rows in `data` are used.
 * nodesize=2.0
 """
-function plot_CA2D(data; t::Int=-1, nodesize=2.0)
+function plot_CA2D(data; t=nothing, nodesize=2.0)
 
-  if t > -1
+  if t == nothing
     dd = data[data[!, :step] .== t, :]
   else
     dd = data
@@ -129,7 +130,9 @@ end
 """
     plot_CA2Dgif(data; kwargs...)
 
-Create a 2D scatter plot from all `data` and adds a frame to the `anim` animation object. If `anim` is not provided, it creates a new one. Returns an animation object. It can be saved as an animated gif using `AgentsPlots.gif(anim, "filename.gif")`.
+Create a 2D scatter plot from all `data` and adds a frame to the `anim` animation object.
+If `anim` is not provided, it creates a new one. Returns an animation object.
+It can be saved as an animated gif using `AgentsPlots.gif(anim, "filename.gif")`.
 
 * `data`: output of of time-step of `CA2D.ca_run`.
 
