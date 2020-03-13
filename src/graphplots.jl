@@ -23,6 +23,7 @@ function plotabm(model::ABM, c, s = length; kwargs...)
     end
 
     # Hack until graphplot recipe can actually plot with number and color
+    # https://github.com/JuliaPlots/GraphRecipes.jl/issues/108
     mi, ma = extrema(ncolor)
     cgrad(:plasma)
     colors = [cgrad(:plasma)[(co-mi)/(ma-mi)] for co in ncolor]
