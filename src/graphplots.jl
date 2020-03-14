@@ -19,7 +19,7 @@ function plotabm(model::ABM, c = x -> "#765db4", s = length; kwargs...)
     N = nodes(model)
     ncolor = []; weights = zeros(length(N))
     for (i, n) in enumerate(N)
-        a = get_node_contents(n, model)
+        a = get_node_agents(n, model)
         push!(ncolor, c(a)); weights[i] = s(a)
     end
 
