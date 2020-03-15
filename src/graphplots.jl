@@ -12,6 +12,11 @@ Plots.jl) of the node while `s` returhs the (relative) size of the node.
 `c` defaults to a purple color for all nodes, while `s` defaults to `length`.
 Internally the `graphplot` recipe is used, and thus
 all keyword arguments are propagated into this recipe.
+
+If you use `plotabm` in an animation loop, notice that not all `method` types
+of `graphplot` are deterministic and thus you should probably set `Random.seed!`
+before each call to `plotabm` (and call `Random.seed!(rand(1:10000))` afterwards
+to ensure random behavior for your abm).
 """
 function plotabm end
 
