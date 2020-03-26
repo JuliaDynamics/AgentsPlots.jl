@@ -10,7 +10,7 @@ LightGraphs = "093fc24a-ae57-5d10-9952-331d41423f4d"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
 
 [compat]
-Agents = "2"
+Agents = "2, 3"
 LightGraphs = "1"
 GraphRecipes = "0.5"
 Plots = "0.28, 0.29"
