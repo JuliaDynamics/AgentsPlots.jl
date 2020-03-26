@@ -6,8 +6,8 @@ export plotabm
     plotabm(model::ABM [, c , s]; kwargs...)
 Plot the `model` as a graph by providing two optional **functions** `c, s`.
 Both of these functions gain as an input the list of agents `a` at a node of
-the model's graph and output a number. `c` returns a *color* (anything acceptable by
-Plots.jl) of the node while `s` returhs the (relative) size of the node.
+the model's graph. `c` returns a *color* (anything acceptable by
+Plots.jl) of the node while `s` returns the (relative) size of the node.
 
 `c` defaults to a purple color for all nodes, while `s` defaults to `length`.
 Internally the `graphplot` recipe is used, and thus
