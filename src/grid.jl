@@ -17,7 +17,7 @@ function plotabm(model::ABM{A, <: GridSpace};
     end
 
     scatter(
-        pos, color = ncolor, ms = weights, marker = markers, label = "",
+        pos; color = ncolor, ms = weights, marker = markers, label = "",
         kwargs...
     )
 end
