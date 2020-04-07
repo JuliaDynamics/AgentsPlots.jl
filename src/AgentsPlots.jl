@@ -3,8 +3,8 @@ module AgentsPlots
 using Agents
 using Plots
 
-include("gridplots.jl")
-include("graphplots.jl")
+include("graph.jl")
+include("grid.jl")
 include("continuous.jl")
 
 end # module
