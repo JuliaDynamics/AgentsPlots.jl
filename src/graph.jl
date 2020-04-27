@@ -1,7 +1,3 @@
-using GraphRecipes, Plots, LightGraphs
-
-export plotabm
-
 """
     plotabm(model::ABM{A, <: DiscreteSpace}; ac, as, am, kwargs...)
 Plot the `model` (either as a graph or as a grid) by configuring the

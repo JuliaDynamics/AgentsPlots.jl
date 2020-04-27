@@ -1,5 +1,3 @@
-using Plots
-
 function plotabm(model::ABM{A, <: GridSpace};
         ac = x -> "#765db4", as = x -> 10, am = x -> :circle,
         kwargs...) where {A}
