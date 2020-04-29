@@ -19,7 +19,7 @@ a grid cell as it adds an offset (same type as `agent.pos`) to the plotted agent
 All other keywords are propagated into `Plots.scatter` and the plot is returned.
 """
 function plotabm(
-        model::ABM{A,<:Union{GridSpace, ContinuousSpace};
+        model::ABM{A,<:Union{GridSpace, ContinuousSpace}};
         ac = "#765db4",
         as = 10,
         am = :circle,
@@ -32,7 +32,7 @@ function plotabm(
     colors = typeof(ac) <: Function ? [ac(model[i]) for i in ids] : ac
     sizes  = typeof(as) <: Function ? [as(model[i]) for i in ids] : as
     markers= typeof(am) <: Function ? [am(model[i]) for i in ids] : am
-    if offeset == nothing
+    if offset == nothing
         pos = [model[i].pos for i in ids]
     else
         pos = [model[i].pos .+ offset(model[i]) for i in ids]
@@ -42,7 +42,7 @@ function plotabm(
         pos;
         markercolor = colors,
         markersize = sizes,
-        markershapes = mshapes,
+        markershapes = markers,
         label = "",
         markerstrokewidth = 0.5,
         markerstrokecolor = :black,
