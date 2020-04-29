@@ -12,11 +12,11 @@ and outputting a valid value for color/shape/size.
 The keyword `scheduler = model.scheduler` decides the plotting order of agents
 (which matters only if there is overlap).
 
-The keyword `offset` is a function with argument `offest(a::Agent)` and is
-valid only for discrete space. It targets scenarios where multiple agents existin within
-a gridd cell as it adds an offset (same type as `agent.pos`) to the plotted agent position.
+The keyword `offset` is a function with argument `offest(a::Agent)`.
+It targets scenarios where multiple agents existin within
+a grid cell as it adds an offset (same type as `agent.pos`) to the plotted agent position.
 
-All other keywords are propatted into `Plots.scatter` and the plot is returned.
+All other keywords are propagated into `Plots.scatter` and the plot is returned.
 """
 function plotabm(
         model::ABM{A,<:Union{GridSpace, ContinuousSpace};
