@@ -3,17 +3,13 @@ using GraphRecipes, Plots, LightGraphs
 export plotabm
 
 """
-    plotabm(model::ABM{A, <: DiscreteSpace}; ac, as, am, kwargs...)
-Plot the `model` (either as a graph or as a grid) by configuring the
-plot through the keywords `ac, as, am`, which are **functions**.
-They take as input the vector of agents at the current node and output a
-color/size/markershape for the marker that will represent the node.
+    plotabm(model::ABM{A, <: GraphSpace}; ac, as, am, kwargs...)
+This function is the same as `plotabm` for `ContinuousSpace`, but here the three key
+functions `ac, as, am` do not get an agent as an input but a vector of agents at
+each node of the graph. Their output is the same.
 
-`ac` defaults to a purple color for all nodes,  `as` defaults to `length`,
-and `am` to circle.
-
-For `GraphSpace`, the `graphplot` recipe is used, while for `GridSpace` a
-normal `scatter` is called. All `kwargs...` are propagated into these functions.
+Here `as` defaults to `length`. Internally, the `graphplot` recipe is used, and
+all other `kwargs...` are propagated there.
 """
 function plotabm(model::ABM{A, <: GraphSpace};
         ac = x -> "#765db4", as = length, am = x -> :circle,
@@ -22,7 +18,7 @@ function plotabm(model::ABM{A, <: GraphSpace};
     N = nodes(model)
     ncolor = Vector(undef, length(N))
     weights = zeros(length(N))
-    markers = Vector{Symbol}(undef, length(N))
+    markers = Vector(undef, length(N))
     for (i, n) in enumerate(N)
         a = get_node_agents(n, model)
         ncolor[i] = ac(a)
