@@ -1,5 +1,3 @@
-using Plots
-
 """
     plotabm(model::ABM{A, <: ContinuousSpace}; ac, as, am, kwargs...)
     plotabm(model::ABM{A, <: DiscreteSpace}; ac, as, am, kwargs...)
@@ -19,19 +17,19 @@ a grid cell as it adds an offset (same type as `agent.pos`) to the plotted agent
 All other keywords are propagated into `Plots.scatter` and the plot is returned.
 """
 function plotabm(
-        model::ABM{A,<:Union{GridSpace, ContinuousSpace}};
-        ac = "#765db4",
-        as = 10,
-        am = :circle,
-        scheduler = model.scheduler,
-        offset = nothing,
-        kwargs...,
-    ) where {A}
+    model::ABM{A,<:Union{GridSpace,ContinuousSpace}};
+    ac = "#765db4",
+    as = 10,
+    am = :circle,
+    scheduler = model.scheduler,
+    offset = nothing,
+    kwargs...,
+) where {A}
 
     ids = scheduler(model)
     colors = typeof(ac) <: Function ? [ac(model[i]) for i in ids] : ac
-    sizes  = typeof(as) <: Function ? [as(model[i]) for i in ids] : as
-    markers= typeof(am) <: Function ? [am(model[i]) for i in ids] : am
+    sizes = typeof(as) <: Function ? [as(model[i]) for i in ids] : as
+    markers = typeof(am) <: Function ? [am(model[i]) for i in ids] : am
     if offset == nothing
         pos = [model[i].pos for i in ids]
     else
@@ -49,3 +47,4 @@ function plotabm(
         kwargs...,
     )
 end
+
