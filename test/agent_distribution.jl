@@ -18,11 +18,9 @@ function schelling(;numagents=320, griddims=(20, 20), min_to_be_happy=3)
 end
 
 @testset "Agent distribution" begin
-  include("schelling_defs.jl")
-
   model = schelling()
-  groupcolor(a) = a[1].group == 1 ? :blue : :orange
-  groupmarker(a) = a[1].group == 1 ? :circle : :square
+  groupcolor(a) = a.group == 1 ? :blue : :orange
+  groupmarker(a) = a.group == 1 ? :circle : :square
   p = plotabm(model; ac = groupcolor, am = groupmarker)
   @test typeof(p) <: AgentsPlots.AbstractPlot
 end

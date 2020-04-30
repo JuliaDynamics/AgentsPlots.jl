@@ -11,8 +11,8 @@ Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
 
 [compat]
 Agents = "2, 3"
-LightGraphs = "1"
 GraphRecipes = "0.5"
+LightGraphs = "1"
 Plots = "0.28, 0.29"
 julia = "1"
 
