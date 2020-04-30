@@ -7,9 +7,13 @@ each node of the graph. Their output is the same.
 Here `as` defaults to `length`. Internally, the `graphplot` recipe is used, and
 all other `kwargs...` are propagated there.
 """
-function plotabm(model::ABM{A, <: GraphSpace};
-        ac = x -> "#765db4", as = length, am = x -> :circle,
-        kwargs...) where {A}
+function plotabm(
+    model::ABM{A,<:GraphSpace};
+    ac = x -> "#765db4",
+    as = length,
+    am = x -> :circle,
+    kwargs...,
+) where {A}
 
     N = nodes(model)
     ncolor = Vector(undef, length(N))
@@ -23,7 +27,14 @@ function plotabm(model::ABM{A, <: GraphSpace};
     end
 
     graphplot(
-        model.space.graph, node_weights = weights, nodeshape = markers, nodecolor = ncolor,
-        color = "black", markerstrokecolor = "black", markerstrokewidth=1.5; kwargs...
+        model.space.graph,
+        node_weights = weights,
+        nodeshape = markers,
+        nodecolor = ncolor,
+        color = "black",
+        markerstrokecolor = "black",
+        markerstrokewidth = 1.5;
+        kwargs...,
     )
 end
+

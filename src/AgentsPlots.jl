@@ -4,9 +4,9 @@ using Agents
 using Plots
 using GraphRecipes
 using LightGraphs
- 
+
 export plotabm
-export Shape # From Plots
+export Shape, @animate # From Plots
 
 include("real.jl")
 include("graph.jl")
