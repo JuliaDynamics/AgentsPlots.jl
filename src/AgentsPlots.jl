@@ -1,12 +1,14 @@
 module AgentsPlots
 
 using Agents
-using Plots
+using Reexport
+
+@reexport using Plots
+
 using GraphRecipes
 using LightGraphs
 
 export plotabm
-export Shape, @animate # From Plots
 
 include("real.jl")
 include("graph.jl")
