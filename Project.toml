@@ -15,6 +15,7 @@ Agents = "3"
 GraphRecipes = "0.5"
 LightGraphs = "1"
 Plots = "0.28, 0.29, 1"
+Reexport = "0.2"
 julia = "1"
 
 [extras]
