@@ -1,6 +1,6 @@
 """
-    plotabm(model::ABM{A, <: ContinuousSpace}; ac, as, am, kwargs...)
-    plotabm(model::ABM{A, <: DiscreteSpace}; ac, as, am, kwargs...)
+    plotabm(model::ABM{<: ContinuousSpace}; ac, as, am, kwargs...)
+    plotabm(model::ABM{<: DiscreteSpace}; ac, as, am, kwargs...)
 
 Plot the `model` as a `scatter`-plot, by configuring the agent shape, color and size
 via the keywords `ac, as, am`.
@@ -17,14 +17,14 @@ a grid cell as it adds an offset (same type as `agent.pos`) to the plotted agent
 All other keywords are propagated into `Plots.scatter` and the plot is returned.
 """
 function plotabm(
-    model::ABM{A,<:Union{GridSpace,ContinuousSpace}};
+    model::ABM{<:Union{GridSpace,ContinuousSpace}};
     ac = "#765db4",
     as = 10,
     am = :circle,
     scheduler = model.scheduler,
     offset = nothing,
     kwargs...,
-) where {A}
+)
 
     ids = scheduler(model)
     colors = typeof(ac) <: Function ? [ac(model[i]) for i in ids] : ac
