@@ -1,7 +1,7 @@
 name = "AgentsPlots"
 uuid = "7820620d-95fb-4739-93b3-b0a14dd83f9a"
 authors = ["George Datseris", "Tim DuBois", "Ali R. Vahdati"]
-version = "0.4.1"
+version = "0.4.2"
 
 [deps]
 Agents = "46ada45e-f475-11e8-01d0-f70cc89e6671"
@@ -16,7 +16,7 @@ GraphRecipes = "0.5"
 LightGraphs = "1"
 Plots = "0.28, 0.29, 1"
 Reexport = "0.2"
-julia = "1"
+julia = "1.5"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
