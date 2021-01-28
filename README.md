@@ -1,5 +1,10 @@
 # AgentsPlots.jl
 
+<center>
+<h2>NOTICE</h2>
+<b>As of Agents.jl v4.0.2, functionality of this package has been incorporated there. Therefore this package will no longer be maintained and will soon be archived.</b>
+</center>
+
 ![Agents.jl](https://github.com/JuliaDynamics/JuliaDynamics/blob/master/videos/agents/agents3_logo.gif?raw=true)
 
 [![](https://img.shields.io/badge/docs-stable-blue.svg)](https://JuliaDynamics.github.io/Agents.jl/stable)
